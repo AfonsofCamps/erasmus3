@@ -1,15 +1,18 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_file
 import os
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return send_from_directory('.', 'index.html')
+    return send_file('index.html')
 
 @app.route('/<path:filename>')
-def serve_static(filename):
-    return send_from_directory('.', filename)
+def serve_files(filename):
+    try:
+        return send_file(filename)
+    except:
+        return "Ficheiro não encontrado", 404
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
